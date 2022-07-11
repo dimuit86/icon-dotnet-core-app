@@ -75,8 +75,9 @@ stages:
             - task: AzureAppServiceManage@0
               inputs:
                 azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
-                Action: 'Swap Slots'
+                Action: 'Start Azure App Service'
                 WebAppName: 'icon-prod-dockerapp-0'
+                SpecifySlotOrASE: true
                 ResourceGroupName: 'icon-prod-rsg'
-                SourceSlot: 'production'
+                Slot: 'production'
     
