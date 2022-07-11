@@ -47,15 +47,36 @@ stages:
   displayName: Deploy container in Prod
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Build
-  
-
-
-    # - task: AzureRmWebAppDeployment@4
-    #   inputs:
-    #     ConnectionType: 'AzureRM'
-    #     azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
-    #     appType: 'webAppContainer'
-    #     WebAppName: 'icon-dev-dockerapp-0'
-    #     DockerNamespace: '$(containerRegistry)'
-    #     DockerRepository: 'dimuiticondotnetwebapp'
-    #     DockerImageTag: '$(tag)'
+  jobs:
+    - deployment: Deployment
+      displayName: Deploy container in Prod
+      pool:
+        vmImage: ubuntu-latest
+      environment:
+        name: prod
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+                appType: 'webAppContainer'
+                WebAppName: 'icon-prod-dockerapp-0'
+                deployToSlotOrASE: true
+                ResourceGroupName: 'icon-prod-rsg'
+                SlotName: 'staging'
+                DockerNamespace: '$(containerRegistry)'
+                DockerRepository: 'dimuiticondotnetwebapp'
+                DockerImageTag: '$(tag)'
+          routeTraffic:
+            steps:
+            - task: AzureAppServiceManage@0
+              inputs:
+                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+                Action: 'Swap Slots'
+                WebAppName: 'icon-prod-dockerapp-0'
+                ResourceGroupName: 'icon-prod-rsg'
+                SourceSlot: 'production'
+    
