@@ -3,7 +3,11 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+- master
+pr:
+ branches:
+   include:
+     - master
 
 resources:
 - repo: self
@@ -22,6 +26,7 @@ variables:
 stages:
 - stage: Build
   displayName: Build and push stage
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build
     displayName: Build
@@ -37,12 +42,20 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
-        appType: 'webAppContainer'
-        WebAppName: 'icon-dev-dockerapp-0'
-        DockerNamespace: '$(containerRegistry)'
-        DockerRepository: 'dimuiticondotnetwebapp'
-        DockerImageTag: '$(tag)'
+
+- stage: Deploy_to_Prod
+  displayName: Deploy container in Prod
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: Build
+  
+
+
+    # - task: AzureRmWebAppDeployment@4
+    #   inputs:
+    #     ConnectionType: 'AzureRM'
+    #     azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+    #     appType: 'webAppContainer'
+    #     WebAppName: 'icon-dev-dockerapp-0'
+    #     DockerNamespace: '$(containerRegistry)'
+    #     DockerRepository: 'dimuiticondotnetwebapp'
+    #     DockerImageTag: '$(tag)'
