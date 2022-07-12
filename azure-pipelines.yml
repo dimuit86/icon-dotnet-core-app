@@ -63,21 +63,18 @@ stages:
                 ConnectionType: 'AzureRM'
                 azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
                 appType: 'webAppContainer'
-                WebAppName: 'icon-prod-dockerapp-0'
-                deployToSlotOrASE: true
-                ResourceGroupName: 'icon-prod-rsg'
-                SlotName: 'staging'
+                WebAppName: 'icon-prod-dockerapp'
                 DockerNamespace: '$(containerRegistry)'
                 DockerRepository: 'dimuiticondotnetwebapp'
                 DockerImageTag: '$(tag)'
-          routeTraffic:
-            steps:
-            - task: AzureAppServiceManage@0
-              inputs:
-                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
-                Action: 'Start Azure App Service'
-                WebAppName: 'icon-prod-dockerapp-0'
-                SpecifySlotOrASE: true
-                ResourceGroupName: 'icon-prod-rsg'
-                Slot: 'production'
+          # routeTraffic:
+          #   steps:
+          #   - task: AzureAppServiceManage@0
+          #     inputs:
+          #       azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+          #       Action: 'Start Azure App Service'
+          #       WebAppName: 'icon-prod-dockerapp-0'
+          #       SpecifySlotOrASE: true
+          #       ResourceGroupName: 'icon-prod-rsg'
+          #       Slot: 'production'
     
