@@ -21,7 +21,7 @@ resources:
     pr: 
       branches:
       - master
-      - releases/*
+      # - releases/*
 
 variables:
   # Container registry service connection established during pipeline creation
