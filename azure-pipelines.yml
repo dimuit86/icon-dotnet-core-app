@@ -10,7 +10,7 @@ pr:
      - master
      - release/*
 
-- repo: self
+# - repo: self
 
 resources:         
   repositories:
