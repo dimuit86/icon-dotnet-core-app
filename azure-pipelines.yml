@@ -10,18 +10,18 @@ pr:
      - master
     #  - release/*
 
-# - repo: self
+- repo: self
 
-resources:         
-  repositories:
-  - repository: icon-dotnet-core-app    
-    type: GitHub
-    # connection: GitHubConnection
-    source: dimuit86/icon-dotnet-core-app
-    pr: 
-      branches:
-      - master
-      # - releases/*
+# resources:         
+#   repositories:
+#   - repository: icon-dotnet-core-app    
+#     type: GitHub
+#     # connection: GitHubConnection
+#     source: dimuit86/icon-dotnet-core-app
+#     pr: 
+#       branches:
+#       - master
+#       - releases/*
 
 variables:
   # Container registry service connection established during pipeline creation
