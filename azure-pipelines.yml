@@ -43,10 +43,36 @@ stages:
         tags: |
           $(tag)
 
+- stage: Deploy_to_stage
+  displayName: Deploy container in stage
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: Build
+  jobs:
+    - deployment: Deployment
+      displayName: Deploy container in stage
+      pool:
+        vmImage: ubuntu-latest
+      environment:
+        name: prod
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+                appType: 'webAppContainer'
+                WebAppName: 'icon-prod-dockerapp'
+                DockerNamespace: '$(containerRegistry)'
+                DockerRepository: 'dimuiticondotnetwebapp'
+                DockerImageTag: '$(tag)'
+
+
 - stage: Deploy_to_Prod
   displayName: Deploy container in Prod
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  dependsOn: Build
+  dependsOn: Deploy_to_stage
   jobs:
     - deployment: Deployment
       displayName: Deploy container in Prod
