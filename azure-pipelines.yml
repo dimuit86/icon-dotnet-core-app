@@ -72,9 +72,9 @@ stages:
             - task: AzureRmWebAppDeployment@4
               inputs:
                 ConnectionType: 'AzureRM'
-                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+                azureSubscription: 'Azure subscription 1(2)(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
                 appType: 'webAppContainer'
-                WebAppName: 'icon-dev-dockerapp'
+                WebAppName: 'icon-app-svc-stage'
                 DockerNamespace: '$(containerRegistry)'
                 DockerRepository: 'dimuiticondotnetwebapp'
                 DockerImageTag: '$(tag)'
@@ -98,9 +98,9 @@ stages:
             - task: AzureRmWebAppDeployment@4
               inputs:
                 ConnectionType: 'AzureRM'
-                azureSubscription: 'Azure subscription 1(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
+                azureSubscription: 'Azure subscription 1(1)(cf8f5fb3-c9ff-4692-9f1a-f9c3d226c597)'
                 appType: 'webAppContainer'
-                WebAppName: 'icon-prod-dockerapp'
+                WebAppName: 'icon-app-svc-prod'
                 DockerNamespace: '$(containerRegistry)'
                 DockerRepository: 'dimuiticondotnetwebapp'
                 DockerImageTag: '$(tag)'
